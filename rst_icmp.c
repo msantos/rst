@@ -9,6 +9,10 @@
  */
 #include "rst.h"
 
+#ifndef ICMP_PARAMPROB_LENGTH
+#define ICMP_PARAMPROB_LENGTH 2
+#endif /* ICMP_PARAMPROB_LENGTH */
+
     int
 rst_icmp_check(u_int8_t type, u_int8_t code)
 {
@@ -259,7 +263,8 @@ rst_icmp_send(pkt_t *rst)
             break;
 
         default:
-            errx(EXIT_FAILURE, "ICMP type %d is not supported yet\n");
+            errx(EXIT_FAILURE, "ICMP type %d is not supported yet\n",
+                    rst->icmp.type);
     }
 
     LIBNET_ERR(libnet_build_ipv4(

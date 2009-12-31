@@ -32,7 +32,7 @@ rst_priv_drop(char *user, char *group, char *path)
     uid = pwd->pw_uid;
 
     if ( (gr = getgrnam(group)) == NULL) {
-        warnx("group does not exist", group);
+        warnx("group does not exist: %s", group);
         return (-1);
     }
     gid = gr->gr_gid;

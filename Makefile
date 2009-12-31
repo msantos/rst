@@ -1,4 +1,4 @@
-LIBNET_CONFIG=/usr/pkg/bin/libnet11-config
+LIBNET_CONFIG=libnet-config
 
 GCC=gcc
 RM=/bin/rm
