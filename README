@@ -1,0 +1,36 @@
+
+rst generates TCP RST's, sort of like you'd expect from the eponym.
+
+So you're sitting in a Starbacks, enjoying your americano and the wifi
+access, a bit covertly even, maybe using some tunnelling service to
+get access on the sly. Ah, so this is what the big blue room is like;
+pretty much like any server room. When the inevitable bandwidth hog shows
+up, riding the corporate VPN and talking loudly on the phone, your SSH
+sessions slow to crawl, not to mention your torrents. What a d*ck!
+
+Well, rst is an anti-d*ck tool. Think of it as peer to peer QoS. If you're
+lucky, you may even hear an F-bomb dropped about the "network problems".
+
+Yeah, rst isn't about any of that. It's a "security and auditing"
+tool <cough>.
+
+
+DEPENDENCIES
+
+rst requires libnet and libpcap.
+
+
+HOW TO BUILD
+
+cd rst
+make
+
+RUNNING
+
+See: rst -h
+
+But, in general:
+
+sudo ./rst -d /tmp/chroot -x -i <your wifi interface>
+
+
