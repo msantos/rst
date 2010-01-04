@@ -115,28 +115,23 @@ main(int argc, char *argv[])
     void
 usage(void)
 {
-    (void)fprintf(stdout, "[%s v%s: Reset TCP connections]\n",
+    (void)fprintf(stderr, "[%s v%s: Reset TCP connections]\n",
                   __progname, RST_BUILD);
-    (void)fprintf(stdout, "Usage: %s [-h|-H <host>|-i <interface>|-I <icmp type>|-p <port>|-R <number>|-x|-X <ip>]\n", __progname);
-    (void)fprintf(stdout, "-h\t\tusage\n");
-    (void)fprintf(stdout, "\n");
-    (void)fprintf(stdout, "-x\t\texclude our IP address\n");
-    (void)fprintf(stdout, "-X <IP Address>\tspecify an IP address to exclude\n");
-    (void)fprintf(stdout, "\n");
-    (void)fprintf(stdout, "-H <host>\thostname\n");
-    (void)fprintf(stdout, "-p <port>\tport to reset\n");
-    (void)fprintf(stdout, "-i <interface>\tinterface\n");
-    (void)fprintf(stdout, "-R <number>\trate limit, number of packets per second\n");
-    (void)fprintf(stdout, "\n");
-    (void)fprintf(stdout, "-d <path>\tchroot path (default = %s)\n", RST_DIR);
-    (void)fprintf(stdout, "-u <user>\tunprivliged user (default = %s)\n", RST_USER);
-    (void)fprintf(stdout, "-g <group>\tunprivilged group (default = %s)\n", RST_GROUP);
-    (void)fprintf(stdout, "\n");
-    (void)fprintf(stdout, "-c <ICMP code>\tcode to use for ICMP resets\n");
-    (void)fprintf(stdout, "-I\t\treset using ICMP\n");
-    (void)fprintf(stdout, "-t <ICMP type>\ttype to use for ICMP resets\n");
-    (void)fprintf(stdout, "\n");
-    (void)fprintf(stdout, "[Bug reports to michael.santos@gmail.com]\n");
-
+    (void)fprintf(stderr, "Usage: %s [-h|-H <host>|-i <interface>|-I <icmp type>|-p <port>|-R <number>|-x|-X <ip>]\n"
+            "-h               usage\n\n"
+            "-x               exclude our IP address\n"
+            "-X <IP Address>  specify an IP address to exclude\n\n"
+            "-H <host>        hostname\n"
+            "-p <port>        port to reset\n"
+            "-i <interface>   interface\n"
+            "-R <number>      rate limit, number of packets per second\n\n"
+            "-d <path>        chroot path (default = %s)\n"
+            "-u <user>        unprivliged user (default = %s)\n"
+            "-g <group>       unprivilged group (default = %s)\n\n"
+            "-c <ICMP code>   code to use for ICMP resets\n"
+            "-I               reset using ICMP\n"
+            "-t <ICMP type>   type to use for ICMP resets\n\n"
+            "[Bug reports to michael.santos@gmail.com]\n",
+            __progname, RST_DIR, RST_USER, RST_GROUP);
     exit (EXIT_FAILURE);
 }
