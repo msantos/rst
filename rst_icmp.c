@@ -300,7 +300,7 @@ rst_icmp_send(pkt_t *rst)
     LIBNET_ERR(libnet_build_ipv4(
                 LIBNET_IPV4_H + icmp_len,                   /* payload size */
                 IPTOS_LOWDELAY | IPTOS_THROUGHPUT,          /* TOS */
-                ih->ip_id+1,                                /* IP ID */
+                ntohs(ih->ip_id)+1,                                /* IP ID */
                 0,                                          /* Frag */
                 64,                                         /* TTL */
                 IPPROTO_ICMP,                               /* Protocol */
@@ -316,9 +316,9 @@ rst_icmp_send(pkt_t *rst)
     state = ((libnet_write(rst->l) == -1) ? "x" : "I");
     (void)fprintf(stdout, "[%s] SRC = %15s:%-6u DST = %15s:%-6u len = %d/%d\n", state,
                   libnet_addr2name4(PAIR(pair, ih->ip_src.s_addr, ih->ip_dst.s_addr), LIBNET_DONT_RESOLVE),
-                  PAIR(pair, th->th_sport, th->th_dport),
+                  PAIR(pair, ntohs(th->th_sport), ntohs(th->th_dport)),
                   libnet_addr2name4(PAIR(pair, ih->ip_dst.s_addr, ih->ip_src.s_addr), LIBNET_DONT_RESOLVE),
-                  PAIR(pair, th->th_dport, th->th_sport), LIBNET_IPV4_H + (u_int32_t)icmp_len, ih->ip_len);
+                  PAIR(pair, ntohs(th->th_dport), ntohs(th->th_sport)), LIBNET_IPV4_H + (u_int32_t)icmp_len, ntohs(ih->ip_len));
 
     (void)fflush(stdout);
 

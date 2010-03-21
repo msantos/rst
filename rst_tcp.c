@@ -63,12 +63,12 @@ rst_tcp_send(pkt_t *rst)
     /* Send out a pair of RST's to source and to destination */
     for (pair = 0; pair < 2; pair++) {
         LIBNET_ERR(libnet_build_tcp(
-                    PAIR(pair, th->th_sport, th->th_dport),     /* Source port */
-                    PAIR(pair, th->th_dport, th->th_sport),     /* Destination port */
-                    PAIR(pair, th->th_seq, th->th_ack),         /* Sequence number */
-                    PAIR(pair, th->th_ack, ( (th->th_ack == 0) ? (th->th_seq + ih->ip_len) : th->th_seq)), /* Acknowledgement number */
+                    PAIR(pair, ntohs(th->th_sport), ntohs(th->th_dport)),     /* Source port */
+                    PAIR(pair, ntohs(th->th_dport), ntohs(th->th_sport)),     /* Destination port */
+                    PAIR(pair, ntohl(th->th_seq), ntohl(th->th_ack)),         /* Sequence number */
+                    PAIR(pair, ntohl(th->th_ack), ( (th->th_ack == 0) ? (ntohl(th->th_seq) + ntohs(ih->ip_len)) : ntohl(th->th_seq))), /* Acknowledgement number */
                     TH_RST,
-                    th->th_win,                                 /* XXX believe the packets window size? */
+                    ntohs(th->th_win),                                 /* XXX believe the packets window size? */
                     0,                                          /* auto checksum */
                     0,                                          /* XXX urg pointer */
                     LIBNET_TCP_H,                               /* total packet length */
@@ -81,7 +81,7 @@ rst_tcp_send(pkt_t *rst)
         LIBNET_ERR(libnet_build_ipv4(
                     LIBNET_IPV4_H + LIBNET_TCP_H,               /* no payload */
                     0,                                          /* TOS */
-                    ih->ip_id,                                  /* IP ID */
+                    ntohs(ih->ip_id),                                  /* IP ID */
                     0,                                          /* Frag */
                     ih->ip_ttl,                                 /* XXX TTL, from the packet? */
                     IPPROTO_TCP,                                /* Protocol */
@@ -97,9 +97,9 @@ rst_tcp_send(pkt_t *rst)
         state =  ( (libnet_write(rst->l) == -1) ? "x" : "R");
         (void)fprintf(stdout, "[%s] SRC = %s:%u DST = %s:%u\n", state,
                       libnet_addr2name4(PAIR(pair, ih->ip_src.s_addr, ih->ip_dst.s_addr), LIBNET_DONT_RESOLVE),
-                      PAIR(pair, th->th_sport, th->th_dport),
+                      PAIR(pair, ntohs(th->th_sport), ntohs(th->th_dport)),
                       libnet_addr2name4(PAIR(pair, ih->ip_dst.s_addr, ih->ip_src.s_addr), LIBNET_DONT_RESOLVE),
-                      PAIR(pair, th->th_dport, th->th_sport));
+                      PAIR(pair, ntohs(th->th_dport), ntohs(th->th_sport)));
 
         (void)fflush(stdout);
 
