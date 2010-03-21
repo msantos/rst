@@ -43,6 +43,7 @@
 rst_pcap_init(pkt_t *rst, char *host, in_port_t port, u_int8_t exclude)
 {
     char *filt = NULL;
+    char *tmp = NULL;
 
     struct bpf_program fcode;
     char buf[PCAP_ERRBUF_SIZE];
@@ -53,9 +54,12 @@ rst_pcap_init(pkt_t *rst, char *host, in_port_t port, u_int8_t exclude)
     (void)memset(buf, 0, PCAP_ERRBUF_SIZE);
 
     ISNULL(filt = (char *)calloc(MAXFILT, 1));
+    ISNULL(tmp = (char *)calloc(MAXFILT, 1));
     ret = snprintf(filt, MAXFILT, "%s", PCAP_FILT);
     if ( (ret < 0) || (ret > MAXFILT))
         errx(EXIT_FAILURE, "could not create pcap filter");
+
+    (void)memcpy(tmp, filt, MAXFILT);
 
     if (pcap_lookupnet(rst->dev, &ipaddr, &ipmask, buf) == -1) {
         warnx("%s\n", buf);
@@ -67,17 +71,21 @@ rst_pcap_init(pkt_t *rst, char *host, in_port_t port, u_int8_t exclude)
         char *addr = NULL;
 
         addr = strdup(rst->myip ? rst->myip : libnet_addr2name4(ipaddr, LIBNET_DONT_RESOLVE));
-        (void)snprintf(filt, MAXFILT, "%s and not host %s", filt, addr);
+        (void)snprintf(filt, MAXFILT, "%s and not host %s", tmp, addr);
+        (void)memcpy(tmp, filt, MAXFILT);
+
         free(addr);
     }
 
     /* RST specific port only */
-    if (port != 0)
-        (void)snprintf(filt, MAXFILT, "%s and port %d", filt, port);
+    if (port != 0) {
+        (void)snprintf(filt, MAXFILT, "%s and port %d", tmp, port);
+        (void)memcpy(tmp, filt, MAXFILT);
+    }
 
     /* RST specific host only */
     if (host != NULL)
-        (void)snprintf(filt, MAXFILT, "%s and host %s", filt, host);
+        (void)snprintf(filt, MAXFILT, "%s and host %s", tmp, host);
 
     (void)fprintf(stdout, "[%s] Using filter: %s\n", __progname, filt);
 
