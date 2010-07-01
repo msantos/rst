@@ -1,4 +1,3 @@
-
 rst generates TCP RST's, sort of like you'd expect from the eponym.
 
 So you're sitting in a Starbacks, enjoying your americano and the wifi
@@ -11,7 +10,7 @@ sessions slow to crawl, not to mention your torrents. What a d*ck!
 Well, rst is an anti-d*ck tool. Think of it as peer to peer QoS. If you're
 lucky, you may even hear an F-bomb dropped about the "network problems".
 
-Yeah, rst isn't about any of that. It's a "security and auditing"
+Yeah, rst isn't about any of that. Its a "security and auditing"
 tool <cough>.
 
 
